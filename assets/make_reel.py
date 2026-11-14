@@ -10,7 +10,7 @@ fc=[
  "[0:v]fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,eq=contrast=1.06:saturation=1.18,vignette=PI/5,fade=t=in:d=0.2[z]",
  "[1:v]format=rgba[ban]","[2:v]format=rgba[nw]",
  f"[3:v]format=rgba,scale=w=-2:h='max(4,230*pow(min(1,max(0,t-{tstar})/0.25),0.7))':eval=frame[st]","[4:v]format=rgba[cd]",
- "[z][ban]overlay=x=0:y=195:shortest=1[v1]",
+ "[z][ban]overlay=x=0:y=225:shortest=1[v1]",
  f"[v1][nw]overlay=x=600:y='500+330*exp(-9*(t-1.2))*cos(14*(t-1.2))+6*sin(8*t)':enable='between(t,1.2,3.2)'[v2]",
  f"[v2][st]overlay=x='80-w/2+90':y='1020-(t-{tstar})*40-h/2':enable='between(t,{tstar},{tstar+2.4})'[v3]",
  f"[v3][cd]overlay=x=40:y='1390+540*exp(-12*(t-{tc}))':enable='gte(t,{tc})'[v4]",
