@@ -1,6 +1,6 @@
 # usage: python3 make_photo_reel.py OUT.mp4 "HOOK LINE 1" "HOOK LINE 2" AUDIO.mp3 img1.jpg img2.jpg ...
 # Photo post -> 9:16 Reel: blurred bg of each photo, sharp photo fitted in the safe area, slim top banner,
-# SAFE AREA (IG/TikTok/YouTube Shorts UI): all text, banner and card stay inside y=290..1500 and x=60..890.
+# SAFE AREA (IG/TikTok/YouTube Shorts UI): all text, banner and card stay inside y=230..1480 and x=90..890 (see SAFE_AREA.md).
 # AutoDash App Store card visible from the first second, whoosh on every slide change, post audio as music, ad appended.
 import sys, subprocess
 from PIL import Image, ImageDraw, ImageFont
@@ -15,7 +15,7 @@ d=ImageDraw.Draw(b); d.rectangle((0,0,1079,6),fill=(48,209,88)); d.rectangle((0,
 def fit(txt,size):
     while size>30:
         f=ImageFont.truetype(P,size)
-        if d.textlength(txt,font=f)<=1000: return f
+        if d.textlength(txt,font=f)<=880: return f
         size-=2
     return ImageFont.truetype(P,30)
 for txt,size,y,col in [(l1.upper(),46,20,'white'),(l2.upper(),58,78,(48,224,98))]:
@@ -30,14 +30,14 @@ ib,ic,ia,iw,ip,iad=N,N+1,N+2,N+3,N+4,N+5
 fc=[]
 for i in range(N):
     fc.append(f"[{i}:v]split[s{i}a][s{i}b];[s{i}a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=40:5,eq=brightness=-0.18[bg{i}];"
-              f"[s{i}b]scale=-2:850[fg{i}];[bg{i}][fg{i}]overlay=x=(W-w)/2:y=475,fps=30,setsar=1,format=yuv420p[c{i}]")
+              f"[s{i}b]scale=-2:880[fg{i}];[bg{i}][fg{i}]overlay=x=(W-w)/2:y=420,fps=30,setsar=1,format=yuv420p[c{i}]")
 cur="c0"
 for i in range(1,N):
     off=round(i*step,2)
     fc.append(f"[{cur}][c{i}]xfade=transition=slideleft:duration={X}:offset={off}[x{i}]"); cur=f"x{i}"
-fc.append(f"[{cur}][{ib}:v]overlay=x=0:y=290[t1]")
-fc.append(f"[{ic}:v]format=rgba,scale=800:-2[cd]")
-fc.append(f"[t1][cd]overlay=x=70:y='1332+600*exp(-12*(t-0.15))'[t2]")
+fc.append(f"[{cur}][{ib}:v]overlay=x=0:y=240[t1]")
+fc.append(f"[{ic}:v]format=rgba,scale=780:-2[cd]")
+fc.append(f"[t1][cd]overlay=x=90:y='1310+620*exp(-12*(t-0.15))'[t2]")
 fc.append(f"color=c=0x00E5FF:s=1080x14:r=30:d={total+1}[bar]")
 fc.append(f"[t2][bar]overlay=x='-W+W*t/{total}':y=H-14:shortest=1,format=yuv420p[v]")
 # audio

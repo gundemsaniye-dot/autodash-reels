@@ -1,4 +1,4 @@
-# SAFE AREA (IG/TikTok/YouTube Shorts UI): banner text, stickers and card stay inside y=290..1500 and x=60..890.
+# SAFE AREA (IG/TikTok/YouTube Shorts UI): banner text, stickers and card stay inside y=230..1480 and x=90..890 (see SAFE_AREA.md).
 import subprocess,sys,json
 src,out=sys.argv[1],sys.argv[2]
 D=float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','csv=p=0',src]).decode())
@@ -10,11 +10,11 @@ inputs=["-i",src]+sum([["-loop","1","-framerate","30","-t",str(D+1),"-i",f] for 
 fc=[
  "[0:v]fps=30,scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,eq=contrast=1.06:saturation=1.18,vignette=PI/5,fade=t=in:d=0.2[z]",
  "[1:v]format=rgba[ban]","[2:v]format=rgba[nw]",
- f"[3:v]format=rgba,scale=w=-2:h='max(4,230*pow(min(1,max(0,t-{tstar})/0.25),0.7))':eval=frame[st]","[4:v]format=rgba,scale=800:-2[cd]",
+ f"[3:v]format=rgba,scale=w=-2:h='max(4,230*pow(min(1,max(0,t-{tstar})/0.25),0.7))':eval=frame[st]","[4:v]format=rgba,scale=780:-2[cd]",
  "[z][ban]overlay=x=0:y=235:shortest=1[v1]",
  f"[v1][nw]overlay=x=600:y='500+330*exp(-9*(t-1.2))*cos(14*(t-1.2))+6*sin(8*t)':enable='between(t,1.2,3.2)'[v2]",
- f"[v2][st]overlay=x='80-w/2+90':y='1020-(t-{tstar})*40-h/2':enable='between(t,{tstar},{tstar+2.4})'[v3]",
- f"[v3][cd]overlay=x=70:y='1332+600*exp(-12*(t-{tc}))':enable='gte(t,{tc})'[v4]",
+ f"[v2][st]overlay=x='120-w/2+90':y='1020-(t-{tstar})*40-h/2':enable='between(t,{tstar},{tstar+2.4})'[v3]",
+ f"[v3][cd]overlay=x=90:y='1310+620*exp(-12*(t-{tc}))':enable='gte(t,{tc})'[v4]",
  f"color=c=0x00E5FF:s=1080x14:r=30:d={D+1}[bar]",
  f"[v4][bar]overlay=x='-W+W*t/{D}':y=H-14:shortest=1[v]",
  f"[0:a]aresample=48000,volume=1.0[a0]",

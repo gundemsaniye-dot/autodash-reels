@@ -11,7 +11,7 @@ d=ImageDraw.Draw(b); d.rectangle((0,0,1079,8),fill=(48,209,88)); d.rectangle((0,
 def fit(txt,size):
     while size>34:
         f=ImageFont.truetype(P,size)
-        if d.textlength(txt,font=f)<=1000: return f
+        if d.textlength(txt,font=f)<=880: return f
         size-=2
     return ImageFont.truetype(P,34)
 for txt,size,y,col in [(l1,70,40,'white'),(l2,84,128,(48,224,98))]:
